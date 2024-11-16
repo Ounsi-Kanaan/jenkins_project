@@ -21,10 +21,23 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
+        stage('Coverage') {
             steps {
                 script {
-                    bat "venv\\Scripts\\activate && pytest"
+                    echo "Running code coverage analysis..."
+                    bat "venv\\Scripts\\activate && pip install coverage"
+                    bat "venv\\Scripts\\activate && coverage run -m pytest"
+                    bat "venv\\Scripts\\activate && coverage report"
+                    bat "venv\\Scripts\\activate && coverage html"  // Generates an HTML report
+                }
+            }
+        }
+        stage('Security Scan') {
+            steps {
+                script {
+                    echo "Running security scan..."
+                    bat "venv\\Scripts\\activate && pip install bandit"
+                    bat "venv\\Scripts\\activate && bandit -r app.py"  // Scans app.py for vulnerabilities
                 }
             }
         }
@@ -32,6 +45,11 @@ pipeline {
             steps {
                 script {
                     echo "Deploying application..."
+                    // Simple deployment script - for local server, or you can replace it with SSH deployment
+                    bat "echo Deploying to local server..."
+                    bat "copy app.py C:\\path\\to\\deployment\\directory"  // Example deployment step
+                    // For remote deployment, you can replace the copy command with a remote server deployment tool
+                    // bat "scp app.py user@remote-server:/path/to/deploy"  // Uncomment for remote deployment using SCP
                 }
             }
         }
