@@ -4,4 +4,4 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 from app import greet
 
 def test_greet():
-    assert greet("World") == "Hello, World from FirstName LastName!"
+    assert greet("World") == "Hello, World from Ounsi Kanaan!"
